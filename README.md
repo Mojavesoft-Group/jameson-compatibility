@@ -12,7 +12,4 @@ Click _Load mod from file..._ and select the JS file that you downloaded earlier
 
 Note that the libraries for using these primitives are not included.
 
-## Obtaining the UUID generation libraries
-Currently, the only primitives unique to Jameson enable secure UUID generation. To import the high-level library which provides an interface to these primitives, download it from [here](https://mojavesoft.net/ide/libraries/uuid_blocks.xml) and import it into Snap!.
-
 
