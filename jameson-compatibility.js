@@ -57,6 +57,29 @@ return {
             }
         );
 
+        // Jameson self-inspection primitives
+        SnapExtensions.primitives.set(
+            'trusted_urls()',
+            function () {
+                return IDE_Morph.prototype.newList(SnapExtensions.urls);
+            }
+        );
+
+
+        SnapExtensions.primitives.set(
+            'get_primitive_code(name)',
+            function (name) {
+                return SnapExtensions.primitives.get(name).toString();
+            }
+        );
+
+        SnapExtensions.primitives.set(
+            'all_primitives()',
+            function () {
+                let my_primitives = Object.fromEntries(SnapExtensions.primitives);
+                return IDE_Morph.prototype.newList(Object.getOwnPropertyNames(my_primitives));
+            }
+        );
     },
 
     // Cleanup functions - get ran when the mod is "deleted"
@@ -65,3 +88,4 @@ return {
     ],
 
 }
+
