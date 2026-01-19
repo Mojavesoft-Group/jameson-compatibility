@@ -84,8 +84,15 @@ return {
 
     // Cleanup functions - get ran when the mod is "deleted"
     cleanupFuncs: [
-        // ...
-    ],
+        () => {
+            SnapExtensions.primitives.delete('generate_uuid()');
+            SnapExtensions.primitives.delete('uuid_available()');
+            SnapExtensions.primitives.delete('webcrypto_available()');
+            SnapExtensions.primitives.delete('trusted_urls()');
+            SnapExtensions.primitives.delete('all_primitives()')
+        }
+    ]
 
 }
+
 
