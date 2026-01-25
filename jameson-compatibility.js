@@ -38,21 +38,21 @@ return {
         // Jameson UUID v4 generation and WebCrypto access
         SnapExtensions.primitives.set(
             'generate_uuid()',
-            function () {
+            function() {
                 return self.crypto.randomUUID();
             }
         );
 
         SnapExtensions.primitives.set(
             'uuid_available()',
-            function () {
+            function() {
                 return Boolean(self?.crypto?.randomUUID);
             }
         );
 
         SnapExtensions.primitives.set(
             'webcrypto_available()',
-            function () {
+            function() {
                 return Boolean(self.crypto);
             }
         );
@@ -60,7 +60,7 @@ return {
         // Jameson self-inspection primitives
         SnapExtensions.primitives.set(
             'trusted_urls()',
-            function () {
+            function() {
                 return IDE_Morph.prototype.newList(SnapExtensions.urls);
             }
         );
@@ -75,66 +75,68 @@ return {
 
         SnapExtensions.primitives.set(
             'all_primitives()',
-            function () {
+            function() {
                 let my_primitives = Object.fromEntries(SnapExtensions.primitives);
                 return IDE_Morph.prototype.newList(Object.getOwnPropertyNames(my_primitives));
             }
         );
+
+        // Jameson WebSocket support; not compatible with Snap! 12's upcoming WebSocket library
+        SnapExtensions.primitives.set(
+            'websocket_connect(url)',
+            function(url) {
+                let newWebSocket = new WebSocket(url);
+                newWebSocket.jamesonLastMsg = "";
+                newWebSocket.jamesonMsgChecked = true;
+                newWebSocket.onmessage = function(event) {
+                    this.jamesonLastMsg = event.data;
+                    this.jamesonMsgChecked = false;
+                    console.log("Message from server ", event.data);
+                    console.log(this);
+                };
+                return newWebSocket;
+            }
+        );
+
+        SnapExtensions.primitives.set(
+            'websocket_close(obj, code)',
+            function(obj, code) {
+                obj.close(code);
+                console.log("closed")
+            }
+        );
+
+        SnapExtensions.primitives.set(
+            'websocket_state(obj)',
+            function(obj) {
+                return obj.readyState;
+            }
+        );
+
+        SnapExtensions.primitives.set(
+            'websocket_send(obj, data)',
+            function(obj, data) {
+                obj.send(data);
+            }
+        );
+
+        SnapExtensions.primitives.set(
+            'websocket_lastmsg(obj)',
+            function(obj, data) {
+                obj.jamesonMsgChecked = true;
+                return obj.jamesonLastMsg;
+            }
+        );
+
+        SnapExtensions.primitives.set(
+            'websocket_msgchecked(obj)',
+            function(obj, data) {
+                return obj.jamesonMsgChecked;
+            }
+        );
     },
 
-    // Jameson WebSocket support; not compatible with Snap! 12's upcoming WebSocket library
-    SnapExtensions.primitives.set(
-        'websocket_connect(url)',
-        function(url) {
-            let newWebSocket = new WebSocket(url);
-            newWebSocket.jamesonLastMsg = "";
-            newWebSocket.jamesonMsgChecked = true;
-            newWebSocket.onmessage = function(event) {
-                this.jamesonLastMsg = event.data;
-                this.jamesonMsgChecked = false;
-                console.log("Message from server ", event.data);
-                console.log(this);
-            };
-            return newWebSocket;
-        }
-    );
 
-    SnapExtensions.primitives.set(
-        'websocket_close(obj, code)',
-        function(obj, code) {
-            obj.close(code);
-            console.log("closed")
-        }
-    );
-
-    SnapExtensions.primitives.set(
-        'websocket_state(obj)',
-        function(obj) {
-            return obj.readyState;
-        }
-    );
-
-    SnapExtensions.primitives.set(
-        'websocket_send(obj, data)',
-        function(obj, data) {
-            obj.send(data);
-        }
-    );
-
-    SnapExtensions.primitives.set(
-        'websocket_lastmsg(obj)',
-        function(obj, data) {
-            obj.jamesonMsgChecked = true;
-            return obj.jamesonLastMsg;
-        }
-    );
-
-    SnapExtensions.primitives.set(
-        'websocket_msgchecked(obj)',
-        function(obj, data) {
-            return obj.jamesonMsgChecked;
-        }
-    );
 
     // Cleanup functions - get ran when the mod is "deleted"
     cleanupFuncs: [
@@ -154,4 +156,3 @@ return {
     ]
 
 }
-
