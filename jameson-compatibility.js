@@ -38,21 +38,21 @@ return {
         // Jameson UUID v4 generation and WebCrypto access
         SnapExtensions.primitives.set(
             'generate_uuid()',
-            function() {
+            function () {
                 return self.crypto.randomUUID();
             }
         );
 
         SnapExtensions.primitives.set(
             'uuid_available()',
-            function() {
+            function () {
                 return Boolean(self?.crypto?.randomUUID);
             }
         );
 
         SnapExtensions.primitives.set(
             'webcrypto_available()',
-            function() {
+            function () {
                 return Boolean(self.crypto);
             }
         );
@@ -60,7 +60,7 @@ return {
         // Jameson self-inspection primitives
         SnapExtensions.primitives.set(
             'trusted_urls()',
-            function() {
+            function () {
                 return IDE_Morph.prototype.newList(SnapExtensions.urls);
             }
         );
@@ -75,7 +75,7 @@ return {
 
         SnapExtensions.primitives.set(
             'all_primitives()',
-            function() {
+            function () {
                 let my_primitives = Object.fromEntries(SnapExtensions.primitives);
                 return IDE_Morph.prototype.newList(Object.getOwnPropertyNames(my_primitives));
             }
@@ -154,3 +154,4 @@ return {
     ]
 
 }
+
